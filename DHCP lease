@@ -1,0 +1,20 @@
+ # Define the DHCP server name and the output file path
+>> $dhcpServer = "alfsja31-vs-AD"  # Replace with your DHCP server name
+>> $outputFile = "C:\users\administrator\Documents\DHCPleases.csv"  # Replace with the desired output file path
+>>
+>> # Import the DHCP server module
+>> Import-Module DhcpServer
+>>
+>> # Get all DHCP leases
+>> $leases = Get-DhcpServerv4Lease -ComputerName $dhcpServer
+>>
+>> # Select the desired fields and export to CSV
+>> $leases | Select-Object @{Name="ScopeId";Expression={$_.ScopeId}},
+>>                          @{Name="IPAddress";Expression={$_.IPAddress}},
+>>                          @{Name="HostName";Expression={$_.HostName}},
+>>                          @{Name="ClientID";Expression={$_.ClientId}},
+>>                          @{Name="AddressState";Expression={$_.AddressState}} |
+>>           Export-Csv -Path $outputFile -NoTypeInformation -Delimiter ";"
+>>
+>> # Output a success message
+>> Write-Host "DHCP leases have been exported to $outputFile"
